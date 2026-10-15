@@ -190,7 +190,7 @@ hint-tutor/
 
 ### 1. Clone & Setup Virtual Environment
 ```bash
-git clone https://github.com/<your-username>/hint-tutor.git
+git clone https://github.com/Abdurrafay19/hint-tutor.git
 cd hint-tutor
 
 # Create and activate virtual environment
