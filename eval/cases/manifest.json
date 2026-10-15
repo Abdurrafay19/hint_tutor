@@ -1,0 +1,380 @@
+[
+  {
+    "id": "count_evens__01",
+    "kind": "mutant",
+    "assignment": "count_evens",
+    "file": "eval/cases/count_evens__01.py",
+    "line": 5,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "count_evens__02",
+    "kind": "mutant",
+    "assignment": "count_evens",
+    "file": "eval/cases/count_evens__02.py",
+    "line": 4,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  },
+  {
+    "id": "count_evens__03",
+    "kind": "mutant",
+    "assignment": "count_evens",
+    "file": "eval/cases/count_evens__03.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "count_evens__04",
+    "kind": "mutant",
+    "assignment": "count_evens",
+    "file": "eval/cases/count_evens__04.py",
+    "line": 4,
+    "bug_type": "wrong_operator",
+    "mutation": "Eq -> NotEq"
+  },
+  {
+    "id": "count_evens__05",
+    "kind": "mutant",
+    "assignment": "count_evens",
+    "file": "eval/cases/count_evens__05.py",
+    "line": 4,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "count_evens__06",
+    "kind": "mutant",
+    "assignment": "count_evens",
+    "file": "eval/cases/count_evens__06.py",
+    "line": 5,
+    "bug_type": "wrong_operator",
+    "mutation": "Add -> Sub"
+  },
+  {
+    "id": "count_vowels__01",
+    "kind": "mutant",
+    "assignment": "count_vowels",
+    "file": "eval/cases/count_vowels__01.py",
+    "line": 5,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "count_vowels__02",
+    "kind": "mutant",
+    "assignment": "count_vowels",
+    "file": "eval/cases/count_vowels__02.py",
+    "line": 5,
+    "bug_type": "wrong_operator",
+    "mutation": "Add -> Sub"
+  },
+  {
+    "id": "count_vowels__03",
+    "kind": "mutant",
+    "assignment": "count_vowels",
+    "file": "eval/cases/count_vowels__03.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  },
+  {
+    "id": "count_vowels__04",
+    "kind": "mutant",
+    "assignment": "count_vowels",
+    "file": "eval/cases/count_vowels__04.py",
+    "line": 5,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  },
+  {
+    "id": "count_vowels__05",
+    "kind": "mutant",
+    "assignment": "count_vowels",
+    "file": "eval/cases/count_vowels__05.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "factorial__01",
+    "kind": "mutant",
+    "assignment": "factorial",
+    "file": "eval/cases/factorial__01.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "factorial__02",
+    "kind": "mutant",
+    "assignment": "factorial",
+    "file": "eval/cases/factorial__02.py",
+    "line": 4,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  },
+  {
+    "id": "factorial__03",
+    "kind": "mutant",
+    "assignment": "factorial",
+    "file": "eval/cases/factorial__03.py",
+    "line": 4,
+    "bug_type": "wrong_operator",
+    "mutation": "Mult -> Add"
+  },
+  {
+    "id": "factorial__04",
+    "kind": "mutant",
+    "assignment": "factorial",
+    "file": "eval/cases/factorial__04.py",
+    "line": 2,
+    "bug_type": "wrong_operator",
+    "mutation": "LtE -> GtE"
+  },
+  {
+    "id": "factorial__05",
+    "kind": "mutant",
+    "assignment": "factorial",
+    "file": "eval/cases/factorial__05.py",
+    "line": 4,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "factorial__06",
+    "kind": "mutant",
+    "assignment": "factorial",
+    "file": "eval/cases/factorial__06.py",
+    "line": 3,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "fibonacci__01",
+    "kind": "mutant",
+    "assignment": "fibonacci",
+    "file": "eval/cases/fibonacci__01.py",
+    "line": 4,
+    "bug_type": "wrong_operator",
+    "mutation": "Add -> Sub"
+  },
+  {
+    "id": "fibonacci__02",
+    "kind": "mutant",
+    "assignment": "fibonacci",
+    "file": "eval/cases/fibonacci__02.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  },
+  {
+    "id": "fibonacci__03",
+    "kind": "mutant",
+    "assignment": "fibonacci",
+    "file": "eval/cases/fibonacci__03.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  },
+  {
+    "id": "fibonacci__04",
+    "kind": "mutant",
+    "assignment": "fibonacci",
+    "file": "eval/cases/fibonacci__04.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "fibonacci__05",
+    "kind": "mutant",
+    "assignment": "fibonacci",
+    "file": "eval/cases/fibonacci__05.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "is_palindrome__01",
+    "kind": "mutant",
+    "assignment": "is_palindrome",
+    "file": "eval/cases/is_palindrome__01.py",
+    "line": 7,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  },
+  {
+    "id": "is_palindrome__02",
+    "kind": "mutant",
+    "assignment": "is_palindrome",
+    "file": "eval/cases/is_palindrome__02.py",
+    "line": 8,
+    "bug_type": "wrong_operator",
+    "mutation": "Sub -> Add"
+  },
+  {
+    "id": "is_palindrome__03",
+    "kind": "mutant",
+    "assignment": "is_palindrome",
+    "file": "eval/cases/is_palindrome__03.py",
+    "line": 3,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  },
+  {
+    "id": "is_palindrome__04",
+    "kind": "mutant",
+    "assignment": "is_palindrome",
+    "file": "eval/cases/is_palindrome__04.py",
+    "line": 5,
+    "bug_type": "wrong_operator",
+    "mutation": "NotEq -> Eq"
+  },
+  {
+    "id": "is_palindrome__05",
+    "kind": "mutant",
+    "assignment": "is_palindrome",
+    "file": "eval/cases/is_palindrome__05.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  },
+  {
+    "id": "is_palindrome__06",
+    "kind": "mutant",
+    "assignment": "is_palindrome",
+    "file": "eval/cases/is_palindrome__06.py",
+    "line": 8,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "max_of_list__01",
+    "kind": "mutant",
+    "assignment": "max_of_list",
+    "file": "eval/cases/max_of_list__01.py",
+    "line": 3,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "max_of_list__02",
+    "kind": "mutant",
+    "assignment": "max_of_list",
+    "file": "eval/cases/max_of_list__02.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  },
+  {
+    "id": "max_of_list__03",
+    "kind": "mutant",
+    "assignment": "max_of_list",
+    "file": "eval/cases/max_of_list__03.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "max_of_list__04",
+    "kind": "mutant",
+    "assignment": "max_of_list",
+    "file": "eval/cases/max_of_list__04.py",
+    "line": 4,
+    "bug_type": "wrong_operator",
+    "mutation": "Gt -> Lt"
+  },
+  {
+    "id": "remove_negatives__01",
+    "kind": "mutant",
+    "assignment": "remove_negatives",
+    "file": "eval/cases/remove_negatives__01.py",
+    "line": 4,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  },
+  {
+    "id": "remove_negatives__02",
+    "kind": "mutant",
+    "assignment": "remove_negatives",
+    "file": "eval/cases/remove_negatives__02.py",
+    "line": 4,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "remove_negatives__03",
+    "kind": "mutant",
+    "assignment": "remove_negatives",
+    "file": "eval/cases/remove_negatives__03.py",
+    "line": 4,
+    "bug_type": "wrong_operator",
+    "mutation": "GtE -> LtE"
+  },
+  {
+    "id": "remove_negatives__04",
+    "kind": "mutant",
+    "assignment": "remove_negatives",
+    "file": "eval/cases/remove_negatives__04.py",
+    "line": 4,
+    "bug_type": "off_by_one",
+    "mutation": "GtE -> Gt"
+  },
+  {
+    "id": "sum_to_n__01",
+    "kind": "mutant",
+    "assignment": "sum_to_n",
+    "file": "eval/cases/sum_to_n__01.py",
+    "line": 3,
+    "bug_type": "wrong_loop_bound",
+    "mutation": "const -1"
+  },
+  {
+    "id": "sum_to_n__02",
+    "kind": "mutant",
+    "assignment": "sum_to_n",
+    "file": "eval/cases/sum_to_n__02.py",
+    "line": 3,
+    "bug_type": "wrong_operator",
+    "mutation": "Add -> Sub"
+  },
+  {
+    "id": "sum_to_n__03",
+    "kind": "mutant",
+    "assignment": "sum_to_n",
+    "file": "eval/cases/sum_to_n__03.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const +1"
+  },
+  {
+    "id": "sum_to_n__04",
+    "kind": "mutant",
+    "assignment": "sum_to_n",
+    "file": "eval/cases/sum_to_n__04.py",
+    "line": 3,
+    "bug_type": "wrong_loop_bound",
+    "mutation": "const +1"
+  },
+  {
+    "id": "sum_to_n__05",
+    "kind": "mutant",
+    "assignment": "sum_to_n",
+    "file": "eval/cases/sum_to_n__05.py",
+    "line": 4,
+    "bug_type": "wrong_operator",
+    "mutation": "Add -> Sub"
+  },
+  {
+    "id": "sum_to_n__06",
+    "kind": "mutant",
+    "assignment": "sum_to_n",
+    "file": "eval/cases/sum_to_n__06.py",
+    "line": 2,
+    "bug_type": "off_by_one",
+    "mutation": "const -1"
+  }
+]

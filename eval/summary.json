@@ -1,0 +1,23 @@
+{
+  "cases": 50,
+  "cases_with_hint": 50,
+  "diagnosis_returned": 50,
+  "line_exact_pct": 60.0,
+  "line_within1_pct": 74.0,
+  "bug_type_match_pct": 42.0,
+  "first_attempt_guard_rejection_pct": 30.0,
+  "fallback_pct": 20.0,
+  "latency_seconds": {
+    "diagnose": {
+      "calls": 50,
+      "median": 0.77,
+      "p95": 0.99
+    },
+    "hint": {
+      "calls": 75,
+      "median": 0.79,
+      "p95": 1.38
+    }
+  },
+  "model": "qwen2.5-coder:3b"
+}

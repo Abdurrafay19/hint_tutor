@@ -1,0 +1,66 @@
+[
+  {
+    "id": "hand_sum_to_n",
+    "kind": "handwritten",
+    "assignment": "sum_to_n",
+    "file": "assignments/sum_to_n/buggy.py",
+    "line": 3,
+    "bug_type": "off_by_one"
+  },
+  {
+    "id": "hand_factorial",
+    "kind": "handwritten",
+    "assignment": "factorial",
+    "file": "assignments/factorial/buggy.py",
+    "line": 2,
+    "bug_type": "missing_base_case"
+  },
+  {
+    "id": "hand_remove_negatives",
+    "kind": "handwritten",
+    "assignment": "remove_negatives",
+    "file": "assignments/remove_negatives/buggy.py",
+    "line": 4,
+    "bug_type": "mutation"
+  },
+  {
+    "id": "hand_count_vowels",
+    "kind": "handwritten",
+    "assignment": "count_vowels",
+    "file": "assignments/count_vowels/buggy.py",
+    "line": 3,
+    "bug_type": "other"
+  },
+  {
+    "id": "hand_max_of_list",
+    "kind": "handwritten",
+    "assignment": "max_of_list",
+    "file": "assignments/max_of_list/buggy.py",
+    "line": 2,
+    "bug_type": "other"
+  },
+  {
+    "id": "hand_count_evens",
+    "kind": "handwritten",
+    "assignment": "count_evens",
+    "file": "assignments/count_evens/buggy.py",
+    "line": 4,
+    "bug_type": "wrong_operator"
+  },
+  {
+    "id": "hand_fibonacci",
+    "kind": "handwritten",
+    "assignment": "fibonacci",
+    "file": "assignments/fibonacci/buggy.py",
+    "line": 2,
+    "bug_type": "other"
+  },
+  {
+    "id": "hand_is_palindrome",
+    "kind": "handwritten",
+    "assignment": "is_palindrome",
+    "file": "assignments/is_palindrome/buggy.py",
+    "line": 3,
+    "bug_type": "off_by_one"
+  }
+]
