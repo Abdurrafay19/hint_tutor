@@ -1,0 +1,27 @@
+{
+  "title": "Grade Analyzer & Curved GPA",
+  "problem": "Write a function analyze_grades(scores, curve=0) that accepts a list of numeric test scores (0-100) and an optional curve bonus. Apply the curve (clamped to max 100), compute the curved class average rounded to 1 decimal place, and return a dictionary with keys: 'average', 'passing_count' (score >= 60), and 'letter_grades' (list of 'A', 'B', 'C', 'D', 'F' matching 90, 80, 70, 60 boundaries). Empty list returns {'average': 0.0, 'passing_count': 0, 'letter_grades': []}.",
+  "function": "analyze_grades",
+  "tests": [
+    {
+      "args": [[85, 92, 78], 5],
+      "expected": {"average": 90.0, "passing_count": 3, "letter_grades": ["A", "A", "B"]}
+    },
+    {
+      "args": [[55, 62, 45], 0],
+      "expected": {"average": 54.0, "passing_count": 1, "letter_grades": ["F", "D", "F"]}
+    },
+    {
+      "args": [[98, 95], 10],
+      "expected": {"average": 100.0, "passing_count": 2, "letter_grades": ["A", "A"]}
+    },
+    {
+      "args": [[72, 88, 60, 59], 0],
+      "expected": {"average": 69.8, "passing_count": 3, "letter_grades": ["C", "B", "D", "F"]}
+    },
+    {
+      "args": [[], 0],
+      "expected": {"average": 0.0, "passing_count": 0, "letter_grades": []}
+    }
+  ]
+}
