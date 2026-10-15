@@ -114,7 +114,7 @@ sequenceDiagram
 ## How It Works
 
 1. **Pre-execution Linting:** The pipeline compiles the submitted string via Python's built-in `compile()` AST pass. If a `SyntaxError` exists, execution aborts immediately, returning the compiler line number and advice without consuming LLM cycles.
-2. **Subprocess Isolation:** `runner.py` spawns an isolated Python interpreter (`python -I _worker.py`) for each test case over standard I/O. Any student-inserted `print()` statements are redirected to an internal buffer so JSON payloads remain uncorrupted. Tests enforce an initial 5.0-second timeout; if an infinite loop occurs, subsequent tests automatically throttle to 1.0 second to preserve system resources.
+2. **Subprocess Isolation:** `runner.py` spawns an isolated Python interpreter (`python -I _worker.py`) for each test case over standard I/O. Any student-inserted `print()` statements are redirected to an internal buffer so JSON payloads remain uncorrupted. Tests enforce an initial 5.0-second timeout; if an infinite loop occurs, subsequent tests automatically fast-abort to eliminate blocking freezes while preserving the complete test report.
 3. **Stage 1 — Fault Localization (`diagnose.py`):** The failing input, expected return value, actual output (or error traceback), and numbered source code are sent to `qwen2.5-coder:3b`. Using Ollama's structured schema mode, the model must return a JSON object adhering to:
    ```json
    {
@@ -125,7 +125,7 @@ sequenceDiagram
    ```
 4. **Stage 2 — Socratic Hint Drafting (`hint.py`):** The model is instructed to write a 2- to 3-sentence hint pointing the student toward the diagnosed line and ending with a reflective question. It is explicitly instructed never to emit code blocks or reveal replacement expressions.
 5. **Stage 3 — Answer-Leak Guard (`guard.py`):** Before display, candidate hints are analyzed against the assignment's `reference.py` using normalized AST line diffing:
-   * **Rule 1 (Code Fences):** Hints containing triple backticks (`` ``` ``) or executable statements (`def `, `return `, `for `) are immediately rejected.
+   * **Rule 1 (Code Fences & Executable Statements):** Hints containing triple backticks (`` ``` ``) or executable statements (`def `, `return `, `for `, `while `) are immediately rejected.
    * **Rule 2 (Verbatim Normalized Lines):** Any hint containing a normalized line from the reference fix (whitespace and punctuation squashed) is rejected.
    * **Rule 3 (Changed Fix Expression):** Diffs under 5 lines extract added token clusters (e.g., `n + 1`, `<=`, `- discount`). If these specific token sequences appear in the text, the hint is rejected.
 6. **Self-Correction & Fallback:** When a hint is rejected, the harness issues a retry prompt with generic rule reasons (without leaking the fix text into the prompt context). If all 3 attempts fail, the harness serves a guaranteed leak-free template:
@@ -253,7 +253,7 @@ python cli.py sum_to_n assignments/sum_to_n/buggy.py --json
 ## Testing & Findings
 
 ### Automated Unit Test Suite
-The core framework includes 24 unit tests covering subprocess execution, AST normalization, diff candidate extraction, guard rejection rules, and pipeline exception handling with mock LLM calls (runs in <1 second without Ollama):
+The core framework includes 29 unit tests covering subprocess execution, tuple preservation, timeout fast-abort, AST normalization, diff candidate extraction, guard rejection rules (code fences, executable statements, colon normalization), and pipeline exception handling with mock LLM calls (runs in <2 seconds without Ollama):
 ```bash
 python -m unittest discover -s tests -t .
 ```
@@ -280,10 +280,10 @@ Below are the empirical findings recorded on a local consumer laptop (AMD Ryzen 
 | **Exact Line Diagnosis** | **60.0%** (30/50) | Model accurately localized the exact mutated or faulty line |
 | **Line Within +-1 Tolerance** | **74.0%** (37/50) | Model localized within 1 line of ground truth (capturing multi-line loop/if blocks) |
 | **Bug Type Match** | **42.0%** (21/50) | Exact categorical match against ground-truth bug taxonomy |
-| **First-Attempt Guard Rejection Rate** | **30.0%** (15/50) | Initial hints caught attempting to leak code blocks or fix tokens |
-| **Fallback Template Rate** | **20.0%** (10/50) | Cases requiring the deterministic fallback after 3 rejected attempts |
-| **Stage 1 Diagnose Latency (Median / p95)** | **0.77s / 0.99s** | Sub-second structured fault localization via Ollama |
-| **Stage 2 Hint Latency (Median / p95)** | **0.79s / 1.38s** | Fast pedagogical hint generation per attempt |
+| **First-Attempt Guard Rejection Rate** | **36.0%** (18/50) | Stricter guard caught initial hints attempting to leak code blocks, statements, or fix tokens |
+| **Fallback Template Rate** | **22.0%** (11/50) | Cases safely defaulting to the deterministic fallback after 3 rejected attempts |
+| **Stage 1 Diagnose Latency (Median / p95)** | **0.76s / 0.94s** | Sub-second structured fault localization via Ollama |
+| **Stage 2 Hint Latency (Median / p95)** | **0.79s / 1.39s** | Fast pedagogical hint generation per attempt |
 
 ### Representative Test Scenarios
 
@@ -300,7 +300,7 @@ Below are the empirical findings recorded on a local consumer laptop (AMD Ryzen 
 ## Known Limitations
 
 1. **Synthetic vs. Real-World Student Bugs:** AST mutants test clean, single-point syntactic variations. Real-world novice code often features compound errors (e.g., combining a misplaced `return` statement with an off-by-one condition simultaneously).
-2. **Semantic Paraphrase Leaks:** The Answer-Leak Guard enforces structural, verbatim, and token-level boundaries. It cannot guarantee prevention of high-level semantic paraphrases (e.g., *"Increment the stop boundary by one"*), though hand audits confirmed that 85%+ of generated hints remain conceptual.
+2. **Semantic Paraphrase Leaks:** The Answer-Leak Guard enforces structural, verbatim, statement-level, and token-level boundaries. It cannot guarantee prevention of high-level semantic English paraphrases (e.g., *"Increment the stop boundary by one"*), though a comprehensive 50-case hand audit confirmed an 80.0% non-leaking rate (68.0% purely pedagogical guiding hints, 12.0% harmless misdiagnoses, and 20.0% semantic English paraphrases).
 3. **Execution Isolation Scope:** The worker process uses standard library subprocess execution (`python -I`) with strict wall-clock timeouts. While this isolates memory space and prevents hanging loops, it is not an OS-level security sandbox (such as Docker or gVisor).
 4. **Scope Boundaries:** Designed exclusively for pure Python assignments: single-file scripts under 150 lines, functional returns, and zero interactive `input()` calls.
 
