@@ -10,9 +10,19 @@ st.set_page_config(page_title="Hint Tutor", layout="wide")
 st.title("Hint Tutor")
 st.caption("Test-grounded hints for Python assignments. Local model through Ollama. No code leaves this machine.")
 
+@st.cache_data
+def get_assignment_titles():
+    return {n: assignment.load(n).title for n in assignment.list_assignments()}
+
+
 names = assignment.list_assignments()
+if not names:
+    st.error("No assignments found in assignments/ directory.")
+    st.stop()
+
+titles = get_assignment_titles()
 with st.sidebar:
-    name = st.selectbox("Assignment", names, format_func=lambda n: "%s (%s)" % (assignment.load(n).title, n))
+    name = st.selectbox("Assignment", names, format_func=lambda n: "%s (%s)" % (titles.get(n, n), n))
     model = st.text_input("Ollama model", config.MODEL)
     ta_view = st.checkbox("Show under-the-hood panel (TA view)", value=True,
                           help="Contains the guard's match details, which reveal the fix. Turn off for students.")
@@ -62,14 +72,21 @@ if res:
                 d.pop("raw", None)
                 st.markdown("**Diagnosis (step 1)**")
                 st.json(d)
+            elif res.status == "hint":
+                st.markdown("**Diagnosis (step 1)**")
+                st.info("Fault localization could not identify a valid line.")
             if res.hint:
                 st.markdown("**Guard (step 2), one row per attempt**")
-                st.dataframe([{"attempt": i, "verdict": "accepted" if a.ok else "rejected",
-                               "reasons": ", ".join(a.reasons), "matched": ", ".join(a.detail),
-                               "seconds": round(a.seconds, 1), "text": a.text}
-                              for i, a in enumerate(res.hint.attempts, start=1)], hide_index=True)
+                if res.hint.attempts:
+                    st.dataframe([{"attempt": i, "verdict": "accepted" if a.ok else "rejected",
+                                   "reasons": ", ".join(a.reasons), "matched": ", ".join(a.detail),
+                                   "seconds": round(a.seconds, 1), "text": a.text}
+                                  for i, a in enumerate(res.hint.attempts, start=1)], hide_index=True)
                 if res.hint.used_fallback:
-                    st.warning("All attempts rejected. Fixed template used.")
+                    if res.diagnosis is None:
+                        st.warning("Diagnosis could not identify a line. Fallback tracing prompt used.")
+                    else:
+                        st.warning("All attempts rejected. Fixed template used.")
             if res.calls:
                 st.markdown("**Model calls**")
                 st.dataframe([{"call": c.name, "seconds": round(c.seconds, 2), "ok": c.ok} for c in res.calls], hide_index=True)

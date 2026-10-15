@@ -34,8 +34,11 @@ def load(name: str, root: Path | None = None) -> Assignment:
     d = root / name
     if not (d / "assignment.json").exists():
         raise FileNotFoundError("No assignment '%s'. Available: %s" % (name, ", ".join(list_assignments(root))))
+    ref_path = d / "reference.py"
+    if not ref_path.exists():
+        raise FileNotFoundError("Assignment '%s' is missing reference.py" % name)
     meta = json.loads((d / "assignment.json").read_text(encoding="utf-8"))
     return Assignment(
         name=name, title=meta["title"], problem=meta["problem"], function=meta["function"],
-        tests=meta["tests"], reference_code=(d / "reference.py").read_text(encoding="utf-8"), directory=d,
+        tests=meta["tests"], reference_code=ref_path.read_text(encoding="utf-8"), directory=d,
     )

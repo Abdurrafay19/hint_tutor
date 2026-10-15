@@ -95,7 +95,8 @@ def main() -> None:
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     for old in OUT_DIR.glob("*"):
-        old.unlink()
+        if old.is_file():
+            old.unlink()
     rng = random.Random(args.seed)
     manifest = []
     for name in assignment.list_assignments():
