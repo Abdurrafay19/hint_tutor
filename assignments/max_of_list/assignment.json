@@ -1,0 +1,12 @@
+{
+  "title": "Max of a list",
+  "problem": "Write a function max_of_list(nums) that returns the largest number in a non-empty list. Do not use the built-in max().",
+  "function": "max_of_list",
+  "tests": [
+    {"args": [[3, 1, 2]], "expected": 3},
+    {"args": [[-5, -2, -9]], "expected": -2},
+    {"args": [[7]], "expected": 7},
+    {"args": [[1, 9, 9, 4]], "expected": 9},
+    {"args": [[0, -1]], "expected": 0}
+  ]
+}

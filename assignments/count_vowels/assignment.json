@@ -1,0 +1,12 @@
+{
+  "title": "Count vowels",
+  "problem": "Write a function count_vowels(s) that returns how many vowels (a, e, i, o, u) the string s contains. Uppercase and lowercase letters both count.",
+  "function": "count_vowels",
+  "tests": [
+    {"args": [""], "expected": 0},
+    {"args": ["hello"], "expected": 2},
+    {"args": ["AEIOU"], "expected": 5},
+    {"args": ["rhythm"], "expected": 0},
+    {"args": ["Programming Language"], "expected": 7}
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Count evens",
+  "problem": "Write a function count_evens(nums) that returns how many numbers in the list are even. Zero and negative even numbers count.",
+  "function": "count_evens",
+  "tests": [
+    {"args": [[]], "expected": 0},
+    {"args": [[1, 3, 5]], "expected": 0},
+    {"args": [[2, 4, 6]], "expected": 3},
+    {"args": [[0, 1, 2]], "expected": 2},
+    {"args": [[-2, -1]], "expected": 1}
+  ]
+}

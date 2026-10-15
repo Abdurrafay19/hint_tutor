@@ -1,0 +1,13 @@
+{
+  "title": "Palindrome check",
+  "problem": "Write a function is_palindrome(s) that returns True if the string s reads the same forwards and backwards, otherwise False. The empty string is a palindrome. Case matters.",
+  "function": "is_palindrome",
+  "tests": [
+    {"args": [""], "expected": true},
+    {"args": ["a"], "expected": true},
+    {"args": ["racecar"], "expected": true},
+    {"args": ["ab"], "expected": false},
+    {"args": ["abca"], "expected": false},
+    {"args": ["abba"], "expected": true}
+  ]
+}
