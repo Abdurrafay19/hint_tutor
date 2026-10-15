@@ -46,7 +46,8 @@ def main() -> int:
         print("%d/%d tests pass\n" % (res.report.n_passed, len(res.report.results)))
 
     label = {"hint": "Hint", "passed": "Result", "syntax_error": "Syntax error",
-             "too_long": "Error", "empty": "Error", "llm_error": "Model error"}[res.status]
+             "too_long": "Error", "empty": "Error", "empty_tests": "Error",
+             "llm_error": "Model error"}.get(res.status, "Error")
     print("%s: %s" % (label, res.message))
 
     if args.debug and res.status == "hint":

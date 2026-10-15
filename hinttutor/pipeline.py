@@ -23,6 +23,9 @@ def run(asg: Assignment, code: str, model: str | None = None) -> PipelineResult:
     if len(code.splitlines()) > config.MAX_CODE_LINES:
         return done(status="too_long", message="Code is longer than %d lines. Trim it and retry." % config.MAX_CODE_LINES)
 
+    if not asg.tests:
+        return done(status="empty_tests", message="Assignment has no test cases defined.")
+
     report = runner.run_tests(code, asg.function, asg.tests)
 
     if report.syntax_error:

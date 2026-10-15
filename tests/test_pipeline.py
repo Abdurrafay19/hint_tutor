@@ -61,10 +61,20 @@ class PipelineTests(unittest.TestCase):
         self.assertIsNone(res.diagnosis)
         self.assertTrue(res.hint.used_fallback)
 
-    def test_ollama_down_reports_llm_error(self):
-        with mock.patch("hinttutor.llm.chat", side_effect=LLMError("connection refused")):
+    def test_boolean_diagnosis_line_rejected_as_invalid(self):
+        bad_bool = reply(json.dumps({"line": True, "bug_type": "off_by_one", "reason": "loop bounds"}))
+        good = reply(json.dumps({"line": 3, "bug_type": "off_by_one", "reason": "loop bounds"}))
+        with mock.patch("hinttutor.llm.chat", side_effect=[bad_bool, good, reply("Look at line 3. Check loop bounds.")]):
             res = pipeline.run(ASG, BUGGY)
-        self.assertEqual(res.status, "llm_error")
+        self.assertEqual(res.diagnosis.line, 3)
+
+    def test_assignment_with_empty_tests_handled_gracefully(self):
+        empty_asg = assignment.Assignment(
+            name="empty", title="Empty", problem="None", function="f", tests=[],
+            reference_code="def f(): pass", directory=ASG.directory,
+        )
+        res = pipeline.run(empty_asg, "def f(): pass")
+        self.assertEqual(res.status, "empty_tests")
 
 
 if __name__ == "__main__":

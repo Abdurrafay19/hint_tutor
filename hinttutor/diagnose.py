@@ -37,8 +37,9 @@ def diagnose(problem: str, code: str, failure: str, model: str | None = None) ->
         )
         try:
             data = json.loads(res.text)
-            line = int(data["line"])
-            valid = 1 <= line <= n_lines
+            line_val = data["line"]
+            valid = type(line_val) is int and 1 <= line_val <= n_lines
+            line = line_val if valid else 0
         except (ValueError, KeyError, TypeError):
             valid = False
         calls.append(CallLog("diagnose", res.seconds, valid))

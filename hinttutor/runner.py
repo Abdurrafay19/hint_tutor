@@ -24,7 +24,12 @@ def run_tests(code: str, function: str, tests: list, timeout: float | None = Non
         res = _run_case(code, function, i, t, timeout)
         results.append(res)
         if res.kind == "timeout":
-            timeout = min(timeout, 1.0)  # an infinite loop usually repeats; do not wait full time on every test
+            for j in range(i + 1, len(tests)):
+                results.append(CaseResult(
+                    index=j, args=tests[j]["args"], expected=tests[j]["expected"],
+                    kind="timeout", error="timed out (aborted after earlier timeout)",
+                ))
+            break
     return TestReport(function, results)
 
 
@@ -53,8 +58,11 @@ def _run_case(code: str, function: str, index: int, test: dict, timeout: float) 
         return res
 
     if data["ok"]:
-        res.actual = data["value"]
-        res.passed = data["value"] == test["expected"]
+        val = data["value"]
+        if data.get("val_type") == "tuple" and isinstance(val, list):
+            val = tuple(val)
+        res.actual = val
+        res.passed = val == test["expected"]
         res.kind = "ok" if res.passed else "wrong"
     else:
         res.kind, res.error, res.error_line = "exception", data["error"], data.get("line")
@@ -65,7 +73,9 @@ def call_repr(function: str, args: list) -> str:
     return "%s(%s)" % (function, ", ".join(repr(a) for a in args))
 
 
-def describe_failure(function: str, r: CaseResult) -> str:
+def describe_failure(function: str, r: CaseResult | None) -> str:
+    if r is None:
+        return "No test failure details available."
     lines = ["call: " + call_repr(function, r.args), "expected: %r" % (r.expected,)]
     if r.kind == "wrong":
         lines.append("actual: %r" % (r.actual,))

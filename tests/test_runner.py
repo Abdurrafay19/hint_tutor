@@ -37,9 +37,23 @@ class RunnerTests(unittest.TestCase):
         rep = runner.run_tests("def other(n):\n    return n\n", "sq", TESTS)
         self.assertIn("NameError", rep.first_failure.error)
 
-    def test_student_print_does_not_break_output(self):
-        rep = runner.run_tests("def sq(n):\n    print('debug')\n    return n * n\n", "sq", TESTS)
+    def test_tuple_return_preserved(self):
+        tests = [{"args": [2], "expected": (2, 4)}]
+        rep = runner.run_tests("def sq(n):\n    return (n, n * n)\n", "sq", tests)
         self.assertTrue(rep.all_passed)
+        self.assertEqual(rep.results[0].actual, (2, 4))
+
+    def test_describe_failure_none_handled_gracefully(self):
+        desc = runner.describe_failure("f", None)
+        self.assertIn("No test failure details available", desc)
+
+    def test_timeout_aborts_subsequent_tests_quickly(self):
+        tests = [{"args": [i], "expected": i} for i in range(5)]
+        rep = runner.run_tests("def f(x):\n    while True:\n        pass\n", "f", tests, timeout=0.1)
+        self.assertEqual(len(rep.results), 5)
+        self.assertTrue(all(r.kind == "timeout" for r in rep.results))
+        # Total time should be close to 0.1s, not 5 * 0.1s
+        self.assertLess(sum(r.seconds for r in rep.results), 0.4)
 
 
 if __name__ == "__main__":

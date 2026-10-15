@@ -21,7 +21,11 @@ def main():
         if not callable(fn):
             raise NameError("function '%s' is not defined" % req["function"])
         value = fn(*req["args"])
-        result = {"ok": True, "value": json.loads(json.dumps(value, default=repr))}
+        result = {
+            "ok": True,
+            "value": json.loads(json.dumps(value, default=repr)),
+            "val_type": type(value).__name__,
+        }
     except BaseException as exc:  # includes SystemExit and RecursionError
         line = None
         for frame in traceback.extract_tb(exc.__traceback__):
