@@ -53,9 +53,25 @@ class GuardTests(unittest.TestCase):
         self.assertFalse(guard.check("Write a0 = x + 0 first.", fix).ok)        # exact reference line
         self.assertFalse(guard.check("```\ncode\n```", fix).ok)                 # fence rule still on
 
-    def test_identical_code_only_fence_rule(self):
-        fix = guard.compute_fix(REF, REF)
-        self.assertTrue(guard.check("Trace it by hand.", fix).ok)
+    def test_executable_statements_rejected(self):
+        for stmt in ("def sum_to_n(n):", "return total + 1", "for i in range(n):", "while i < n:"):
+            v = guard.check("You should write " + stmt, self.fix)
+            self.assertIn("code_block", v.reasons, stmt)
+
+    def test_trailing_colon_omission_caught(self):
+        ref = "def f(x):\n" + "".join("    a%d = x + %d\n" % (i, i) for i in range(8)) + "    if x > 0:\n        return a0\n"
+        student = "def f(x):\n    return x\n"
+        fix = guard.compute_fix(student, ref)
+        self.assertTrue(fix.broad)
+        v = guard.check("You need if x > 0 before returning", fix)
+        self.assertIn("fix_line", v.reasons)
+
+    def test_single_digit_constant_fix_rejected(self):
+        ref = "def f(x):\n    count = 0\n    return count\n"
+        bug = "def f(x):\n    count = 1\n    return count\n"
+        fix = guard.compute_fix(bug, ref)
+        v = guard.check("Consider changing the initial value of count to 0 to fix this issue.", fix)
+        self.assertFalse(v.ok)
 
 
 if __name__ == "__main__":

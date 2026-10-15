@@ -19,8 +19,11 @@ from dataclasses import dataclass, field
 
 FENCE = "`" * 3
 BROAD_LIMIT = 5
-MIN_LINE_LEN = 6
+MIN_LINE_LEN = 5
 _TOKEN_RE = re.compile(r"\w+|<=|>=|==|!=|//|\*\*|\+=|-=|\*=|/=|->|[^\w\s]")
+_EXEC_STMT_RE = re.compile(
+    r"\b(def\s+\w+\s*\(|return\s+[^.?!:\n]+|for\s+\w+\s+in\s+|while\s+[^.?!:\n]+:)"
+)
 
 
 @dataclass
@@ -61,7 +64,14 @@ def _candidates(hunks: list) -> list:
                 continue
             span = "".join(tb[j1:j2])
             left = tb[j1 - 1] if (j1 > 0 and tb[j1 - 1] not in "([,:") else ""
-            for cand in (span, left + span):
+            cands = [span, left + span]
+            for tok in tb[j1:j2]:
+                if len(tok) >= 2 and not tok.isalpha():
+                    cands.append(tok)
+            # Catch variable assignment updates like count = 0 or count to 0
+            if j1 > 1 and tb[j1 - 1] == "=" and tb[j1 - 2].isidentifier():
+                cands.extend([tb[j1 - 2] + "=" + span, tb[j1 - 2] + span, tb[j1 - 2] + "to" + span])
+            for cand in cands:
                 if len(cand) >= 2 and not cand.isalpha() and cand not in out:
                     out.append(cand)
     return out
@@ -93,13 +103,14 @@ def check(hint: str, fix: Fix) -> Verdict:
     if not text:
         return Verdict(False, ["empty"])
     reasons, detail = [], []
-    if FENCE in text:
+    if FENCE in text or _EXEC_STMT_RE.search(text):
         reasons.append("code_block")
     squashed = _squash(text)
 
     lines = fix.reference_lines if fix.broad else fix.fix_lines
     for line in lines:
-        s = _squash(line)
+        clean = line.strip().rstrip(":")
+        s = _squash(clean)
         if len(s) >= MIN_LINE_LEN and s in squashed:
             reasons.append("fix_line")
             detail.append(line.strip())
